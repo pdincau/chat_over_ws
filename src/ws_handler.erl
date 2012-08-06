@@ -147,7 +147,7 @@ function ready(){
 	if (\"WebSocket\" in window) {
 		// browser supports websockets
 		var ws = new WebSocket(\"ws://localhost:8080/websocket\");
-                var join_leave = true;
+                var offline = true;
 		ws.onopen = function() {
 			addStatus(\"Websocket connected!\");
 		};
@@ -162,26 +162,31 @@ function ready(){
 		};
                 
 		send_msg = function() {
-			var message = document.getElementById('msg');
-			ws.send('msg' + \" \" + message.value);
-			val.value = '';
+                        var message = document.getElementById('msg');
+                        if (! offline) {
+			    ws.send('msg' + \" \" + message.value);
+			    message.value = '';			    
+                        } else {
+                            alert('Join chat first');
+                        }
+                        message.value = '';
 		  	return true;
 	        };
 		join_leave_chat = function() {
                         var mybutton = document.getElementById('mybutton');
-                        if (join_leave) {
+                        if (offline) {
 			     var nick = document.getElementById('nick');
                              var room = document.getElementById('room');
                              var roomName = room.options[room.selectedIndex].text;
 		             ws.send('join' + \" \" + roomName + \" \" + nick.value);
                              mybutton.value = 'Leave';
                              mybutton.style.backgroundColor = 'red';
-                             join_leave = false;
+                             offline = false;
                         } else {
                              ws.send(\"leave\");
                              mybutton.value = 'Join';
                              mybutton.style.backgroundColor = '#fff';
-                             join_leave = true;
+                             offline = true;
                         }
 		  	return true;
 	        };
