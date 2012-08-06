@@ -1,0 +1,15 @@
+{application, chat_over_ws, [
+        {description, "An artificial balanced world."},
+        {vsn, "0.1.0"},
+        {modules, [chat_over_ws_supersup]},
+        {registered, []},
+        {applications, [
+                kernel,
+                stdlib,
+                compiler,
+                crypto,
+                syntax_tools
+        ]},
+        {env, []},
+        {mod, {chat_over_ws, []}}
+]}.
